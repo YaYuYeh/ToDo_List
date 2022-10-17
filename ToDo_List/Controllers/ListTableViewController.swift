@@ -43,7 +43,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         let cell = tableView.dequeueReusableCell(withIdentifier: "List", for: indexPath)
         let task = tasks[indexPath.row]
         cell.textLabel?.text = task.taskTitle
-        cell.textLabel?.font = .systemFont(ofSize: 18)
+        cell.textLabel?.font = .systemFont(ofSize: 20)
         
         
         //設定datePicker選擇的日期格式，並轉為字串
@@ -79,6 +79,24 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         tasks.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
+    
+    //header標題
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Task"
+    }
+    //header高度
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35
+    }
+    //header樣式
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else {return}
+        header.textLabel?.textColor = .darkGray
+        header.textLabel?.font = UIFont(name: "Snell Roundhand Bold", size: 45)
+    }
+    
+    
+    
     
     //MARK: - Table view delegate
     //點擊儲存格後切換是否完成的開關：改變陣列該項變數的值，並更新表格顯示的內容

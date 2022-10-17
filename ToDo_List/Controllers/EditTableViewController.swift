@@ -43,6 +43,11 @@ class EditTableViewController: UITableViewController {
         deadlinePicker.contentHorizontalAlignment = .leading
     }
     
+    //header高度
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
     //判斷segue是否達成條件，可觸發unwind回到上一頁
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         //若編輯的textfield皆有值，則完成編輯回傳到上一頁
