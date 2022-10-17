@@ -16,40 +16,22 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         }
     }
     var longPress:UILongPressGestureRecognizer?
-    //宣告惰性儲存屬性，來儲存表格顯示的陣列，未使用search時，顯示的內容會是全部的tasks，直到第一次存取時，才會設定filterTasks的內容，可讓程式更有效率。
-    lazy var filterTasks = tasks
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //產生UISearchController
-        let searchController = UISearchController()
-        //顯示在navigationItem上
-        navigationItem.searchController = searchController
-        //表格捲動時，讓searchBar不跟著動，持續顯示在navigationBar上
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-        searchController.searchResultsUpdater = self
-        
-        
-        
-        //打開app時會自動讀取儲存的陣列
         if let tasks = Task.loadTask(){
-            //原本的陣列=儲存後讀取的陣列
             self.tasks = tasks
         }
     }
-
+    
+    //點擊Add新增Task：清理手勢，並切換到下一頁
     @IBAction func toEdit(_ sender: Any) {
         longPress = nil
         print("清理手勢")
-            
+        //切換頁面到下一頁(編輯頁面)
         guard let controller = storyboard?.instantiateViewController(withIdentifier: "EditTableViewController") else { return }
         navigationController?.pushViewController(controller, animated: true)
-            
-        
     }
-    
     
     
     // MARK: - Table view data source
@@ -63,6 +45,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         cell.textLabel?.text = task.taskTitle
         cell.textLabel?.font = .systemFont(ofSize: 18)
         
+        
         //設定datePicker選擇的日期格式，並轉為字串
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -71,24 +54,14 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         cell.detailTextLabel?.textColor = .darkGray
         
         
-        //利用attributedString設定文字樣式->刪除線
-        var attributedTaskTitle = AttributedString(task.taskTitle)
-        var container = AttributeContainer()
-        //任務為完成狀態，右側會打勾並顯示刪除線，反之則無
+        //任務為完成狀態，右側會打勾，反之則無
         if task.isDone{
-            container.inlinePresentationIntent = .strikethrough
             cell.accessoryType = .checkmark
             print("任務完成")
         }else{
-            container.inlinePresentationIntent?.remove(.strikethrough)
-            //container.inlinePresentationIntent = .none
             cell.accessoryType = .none
             print("任務未完成")
-        }
-        attributedTaskTitle.setAttributes(container)
-        //attributedText型別為NSAttributedString
-        cell.textLabel?.attributedText = NSAttributedString(attributedTaskTitle)
-        
+        }        
         
         //產生一個長按手勢:表格會重複呼叫重新顯示的表格，因此在產生手勢前需要先清空
         cell.gestureRecognizers?.removeAll()
@@ -97,9 +70,9 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
             longPress.delegate = self
             cell.addGestureRecognizer(longPress)
         }
-
        return cell
     }
+    
     //左滑刪除
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //將選取的資料，從陣列中移除
@@ -127,6 +100,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
             }
         }
     }
+    
     //透過segue轉型為編輯頁面，將要修改的資料傳遞至他的儲存屬性
     @IBSegueAction func passRevisedVC(_ coder: NSCoder, sender: Any?, segueIdentifier: String?) -> EditTableViewController? {
         let revisedVC = EditTableViewController(coder: coder)
@@ -139,19 +113,19 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         }
     }
     
-    
     // MARK: - Navigation
     @IBAction func unwindToListTVC(_ unwindSegue: UIStoryboardSegue) {
         //透過unwindSegue轉型為編輯頁面，來存取他儲存的資料task
         if let source = unwindSegue.source as? EditTableViewController,
            let task = source.task{
+            //longPress有值，代表長按修改
             if let cell = longPress?.view as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell){
                 print("revise:\(indexPath)\n\n array:\(tasks)")
                 tasks[indexPath.row] = task
                 tableView.reloadData()
-            }
-            else{
+            }else{
+                //longPress為空值，代表點擊add新增
                 //取到新建立的task資料，新增到task陣列中
                 tasks.insert(task, at: 0)
                 tableView.reloadData()
@@ -159,16 +133,5 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
             }
         }
     }
-
-
-    /*
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 

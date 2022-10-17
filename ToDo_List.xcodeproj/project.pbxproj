@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8426C80C28FDA791001C556A /* extensionUISearchResultsUpdating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8426C80B28FDA791001C556A /* extensionUISearchResultsUpdating.swift */; };
 		849882D128FBDFE300E550F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849882D028FBDFE300E550F1 /* AppDelegate.swift */; };
 		849882D328FBDFE300E550F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849882D228FBDFE300E550F1 /* SceneDelegate.swift */; };
 		849882D828FBDFE300E550F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849882D628FBDFE300E550F1 /* Main.storyboard */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8426C80B28FDA791001C556A /* extensionUISearchResultsUpdating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensionUISearchResultsUpdating.swift; sourceTree = "<group>"; };
 		849882CD28FBDFE300E550F1 /* ToDo_List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo_List.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		849882D028FBDFE300E550F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		849882D228FBDFE300E550F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				849AFA2728FBF16600109323 /* Task.swift */,
-				8426C80B28FDA791001C556A /* extensionUISearchResultsUpdating.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -165,7 +162,6 @@
 			files = (
 				849882D128FBDFE300E550F1 /* AppDelegate.swift in Sources */,
 				849AFA2C28FBF8F800109323 /* EditTableViewController.swift in Sources */,
-				8426C80C28FDA791001C556A /* extensionUISearchResultsUpdating.swift in Sources */,
 				849882D328FBDFE300E550F1 /* SceneDelegate.swift in Sources */,
 				849AFA2828FBF16600109323 /* Task.swift in Sources */,
 				849AFA2428FBF10500109323 /* ListTableViewController.swift in Sources */,

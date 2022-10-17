@@ -9,24 +9,18 @@ import UIKit
 
 class EditTableViewController: UITableViewController {
 
-
     @IBOutlet weak var taskTitleTextField: UITextField!
     @IBOutlet weak var deadlinePicker: UIDatePicker!
     @IBOutlet weak var doneSwitch: UISwitch!
     @IBOutlet weak var remarkTextView: UITextView!
     
-    @IBOutlet weak var label: UILabel!
+    //新增時為空值，修改則有值
     var task:Task?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateReivsion()
-        //datePicker樣式設定
-        deadlinePicker.minimumDate = Date()
-        deadlinePicker.datePickerMode = .date
-        deadlinePicker.contentHorizontalAlignment = .leading
-        
+        setDatePicker()
     }
     
     func updateReivsion(){
@@ -39,12 +33,23 @@ class EditTableViewController: UITableViewController {
             remarkTextView.text = task.remark
         }
     }
+    //datePicker樣式設定
+    func setDatePicker(){
+        //最小值為當天
+        deadlinePicker.minimumDate = Date()
+        //只顯示日期，不顯示時間
+        deadlinePicker.datePickerMode = .date
+        //水平靠左
+        deadlinePicker.contentHorizontalAlignment = .leading
+    }
     
-    
+    //判斷segue是否達成條件，可觸發unwind回到上一頁
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        //若編輯的textfield皆有值，則完成編輯回傳到上一頁
         if taskTitleTextField.text?.isEmpty == false{
             return true
         }else{
+            //未完成編輯，跳出警告視窗
             let alert = UIAlertController(title:"資料不完整", message: "請輸入任務名稱", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "確認", style: .default)
             alert.addAction(okAction)
@@ -52,7 +57,6 @@ class EditTableViewController: UITableViewController {
             
             return false
         }
-           
     }
 
 
@@ -65,5 +69,4 @@ class EditTableViewController: UITableViewController {
         
         task = Task(taskTitle: taskTitle, deadline: deadline, isDone: isdone, remark: remark)
     }
-
 }
