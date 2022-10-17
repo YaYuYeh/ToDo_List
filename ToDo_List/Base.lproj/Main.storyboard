@@ -49,7 +49,7 @@
                     <navigationItem key="navigationItem" id="KXG-1c-d2t">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="GEp-Wb-lPq">
                             <connections>
-                                <segue destination="jWM-vw-0BC" kind="show" id="nrG-m1-LlT"/>
+                                <action selector="toEdit:" destination="voF-RX-zgG" id="WU4-SG-8qE"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -60,7 +60,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="add-Kq-qAg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="813.84615384615381" y="0.7109004739336493"/>
+            <point key="canvasLocation" x="871" y="1"/>
         </scene>
         <!--Edit Table View Controller-->
         <scene sceneID="N4w-J7-J0m">
@@ -182,7 +182,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jws-H3-rFe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="k22-90-TMa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1509.2307692307693" y="0.7109004739336493"/>
+            <point key="canvasLocation" x="1629" y="1"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cwg-KR-uhb">
@@ -203,9 +203,6 @@
             <point key="canvasLocation" x="142" y="1"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="H1x-bQ-duL"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

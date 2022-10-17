@@ -7,10 +7,7 @@
 
 import UIKit
 
-class ListTableViewController: UITableViewController, UIGestureRecognizerDelegate, UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        <#code#>
-    }
+class ListTableViewController: UITableViewController, UIGestureRecognizerDelegate{
     
     var tasks = [Task](){
         //在陣列的計算屬性應用prperty observer:每次陣列變動時，會觸發儲存陣列的動作
@@ -19,16 +16,20 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         }
     }
     var longPress:UILongPressGestureRecognizer?
+    //宣告惰性儲存屬性，來儲存表格顯示的陣列，未使用search時，顯示的內容會是全部的tasks，直到第一次存取時，才會設定filterTasks的內容，可讓程式更有效率。
+    lazy var filterTasks = tasks
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //產生UISearchController
         let searchController = UISearchController()
-        searchController.searchResultsUpdater = self
+        //顯示在navigationItem上
         navigationItem.searchController = searchController
+        //表格捲動時，讓searchBar不跟著動，持續顯示在navigationBar上
         navigationItem.hidesSearchBarWhenScrolling = false
         
-        
+        searchController.searchResultsUpdater = self
         
         
         
@@ -39,6 +40,18 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         }
     }
 
+    @IBAction func toEdit(_ sender: Any) {
+        longPress = nil
+        print("清理手勢")
+            
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "EditTableViewController") else { return }
+        navigationController?.pushViewController(controller, animated: true)
+            
+        
+    }
+    
+    
+    
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
@@ -64,20 +77,18 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         //任務為完成狀態，右側會打勾並顯示刪除線，反之則無
         if task.isDone{
             container.inlinePresentationIntent = .strikethrough
-            attributedTaskTitle.setAttributes(container)
-            //attributedText型別為NSAttributedString
-            cell.textLabel?.attributedText = NSAttributedString(attributedTaskTitle)
-            
-            
-            
             cell.accessoryType = .checkmark
-            
+            print("任務完成")
         }else{
-            container.inlinePresentationIntent = .none
-            attributedTaskTitle.setAttributes(container)
-            cell.textLabel?.attributedText = NSAttributedString(attributedTaskTitle)
+            container.inlinePresentationIntent?.remove(.strikethrough)
+            //container.inlinePresentationIntent = .none
             cell.accessoryType = .none
+            print("任務未完成")
         }
+        attributedTaskTitle.setAttributes(container)
+        //attributedText型別為NSAttributedString
+        cell.textLabel?.attributedText = NSAttributedString(attributedTaskTitle)
+        
         
         //產生一個長按手勢:表格會重複呼叫重新顯示的表格，因此在產生手勢前需要先清空
         cell.gestureRecognizers?.removeAll()
@@ -101,6 +112,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         tasks[indexPath.row].isDone = !tasks[indexPath.row].isDone
         tableView.reloadData()
+        print("轉換完成狀態")
     }
     
     // MARK: - Taget action
@@ -110,6 +122,8 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
             if let cell = recognier.view as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell){
                 performSegue(withIdentifier: "Revise", sender: indexPath)
+                //長按時儲存手勢
+                longPress = recognier
             }
         }
     }
@@ -133,7 +147,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
            let task = source.task{
             if let cell = longPress?.view as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell){
-                print("revise:\(indexPath)")
+                print("revise:\(indexPath)\n\n array:\(tasks)")
                 tasks[indexPath.row] = task
                 tableView.reloadData()
             }
@@ -141,7 +155,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
                 //取到新建立的task資料，新增到task陣列中
                 tasks.insert(task, at: 0)
                 tableView.reloadData()
-                print("insert at 0")
+                print("insert at 0\n\n array:\(tasks)")
             }
         }
     }
