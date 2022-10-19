@@ -44,6 +44,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         let task = tasks[indexPath.row]
         cell.textLabel?.text = task.taskTitle
         cell.textLabel?.font = .systemFont(ofSize: 20)
+        cell.textLabel?.font = UIFont(name: "MuktaMahee Regular", size: 18)
         
         
         //設定datePicker選擇的日期格式，並轉為字串
@@ -52,6 +53,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         let deadlineStr = dateFormatter.string(from: task.deadline)
         cell.detailTextLabel?.text = deadlineStr
         cell.detailTextLabel?.textColor = .darkGray
+        cell.detailTextLabel?.font = UIFont(name: "DIN Alternate", size: 13)
         
         
         //任務為完成狀態，右側會打勾，反之則無
@@ -65,7 +67,7 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
         
         //產生一個長按手勢:表格會重複呼叫重新顯示的表格，因此在產生手勢前需要先清空
         cell.gestureRecognizers?.removeAll()
-        longPress = UILongPressGestureRecognizer(target: self, action: #selector(handlerLongPress(recognier:  )))
+        longPress = UILongPressGestureRecognizer(target: self, action: #selector(handlerLongPress(recognizer:  )))
         if let longPress{
             longPress.delegate = self
             cell.addGestureRecognizer(longPress)
@@ -108,13 +110,13 @@ class ListTableViewController: UITableViewController, UIGestureRecognizerDelegat
     
     // MARK: - Taget action
     //長按進入編輯頁面，修改已存在的資料
-    @objc func handlerLongPress(recognier:UILongPressGestureRecognizer){
-        if recognier.state == .ended{
-            if let cell = recognier.view as? UITableViewCell,
+    @objc func handlerLongPress(recognizer:UILongPressGestureRecognizer){
+        if recognizer.state == .ended{
+            if let cell = recognizer.view as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell){
                 performSegue(withIdentifier: "Revise", sender: indexPath)
                 //長按時儲存手勢
-                longPress = recognier
+                longPress = recognizer
             }
         }
     }
